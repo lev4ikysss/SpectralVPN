@@ -1,0 +1,17 @@
+
+server {
+	listen 443 ssl;
+	server_name spectralvpn.ru;
+
+	location / {
+		root /var/www/html/spectralvpn.ru;
+		index index.html;
+                try_files $uri $uri/ =404;
+        }
+
+	gzip on;
+	gzip_min_length 1024;
+	ssl_certificate /etc/letsencrypt/live/spectralvpn.ru/cert.pem;
+	ssl_certificate_key /etc/letsencrypt/live/spectralvpn.ru/privkey.pem;
+
+}
