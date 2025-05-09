@@ -346,6 +346,7 @@ html{
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
 }
 
 #block_4_info_block_a{
