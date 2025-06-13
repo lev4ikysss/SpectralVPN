@@ -1,0 +1,13 @@
+# /etc/systemd/system
+[Unit]
+Description=Shadowsocks-Libev Custom Server Service for %I
+Documentation=man:ss-server(1)
+After=network-online.target
+
+[Service]
+Type=simple
+ExecStart=ss-server -c /var/snap/shadowsocks-libev/common/etc/shadowsocks-libev/config-users.json
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target

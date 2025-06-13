@@ -1,0 +1,1 @@
+/var/snap/shadowsocks-libev/common/etc/shadowsocks-libev

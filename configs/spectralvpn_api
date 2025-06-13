@@ -1,3 +1,4 @@
+# /etc/nginx/sites-enabled
 server {
     listen 8001 ssl;
     server_name spectralvpn.ru;
