@@ -523,6 +523,16 @@ footer{
     align-items: center;
 }
 
+#legal{
+    font-size: 10pt;
+    width: 35vw;
+    margin-left: 5vw;
+    margin-right: 5vw;
+    text-align: center;
+    position: relative;
+    left: 60px;
+}
+
 @media (max-width: 768px) {
     
 }
