@@ -33,7 +33,7 @@ html{
     scroll-behavior: smooth;
 }
 
-#header_a{
+.header_a{
     font-weight: 500;
     margin: 1vh;
 }
@@ -94,11 +94,77 @@ html{
     margin: 20px;
 }
 
-#block_1_img{
-    width: 95vw;
+#carousel{
+    width: 80%;
+    margin: auto;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+#card{
+    width: 28vh;
+    min-height: 36vh;
+    margin-left: 5vh;
+    margin-right: 5vh;
+    background-color: #fde7d8;
+    border-radius: 2vh;
+    text-align: left;
+    padding: 3vh;
+}
+
+#card > p{
+    font-weight: 400;
+    margin-bottom: 1vh;
+}
+
+#card_h2{
+    font-size: 15pt;
+    font-weight: 500;
+    margin-bottom: 2vh;
+    margin-top: 0.5vh;
+    text-align: center;
+}
+
+#card > ul > li{
+    position: relative;
+    left: 2vh;
+}
+
+#card > ul > li::before{
+    content: "• ";
+    color: #707070;
+}
+
+#card > ul{
+    list-style: none;
+}
+
+#li{
+    margin-top: 5vh;
+}
+
+#li1{
+    margin-top: 2.5vh;
+}
+
+#card > div{
+    margin: auto;
+    margin-top: 20%;
+    text-indent: 0;
+    width: 50%;
+    background-color: #F39037;
     border-radius: 35px;
-    object-fit: cover;
-    height: 70vh;
+    height: 6vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+#card > div > a{
+    color: white;
+    font-weight: 600;
 }
 
 #block_1_div{
@@ -534,5 +600,152 @@ footer{
 }
 
 @media (max-width: 768px) {
+    *{
+        font-weight: 400;
+    }
+
+    header{
+        flex-wrap: wrap-reverse;
+        justify-content: left;
+    }
+
+    #main_txt{
+        left: -1vw;
+        margin: auto;
+    }
     
+    footer{
+        flex-wrap: wrap;
+        justify-content: left;
+    }
+
+    .header_a{
+        font-size: 0pt;
+    }
+
+    #mob{
+        font-size: 11pt;
+    }
+
+    nav{
+        justify-content: space-around;
+        width: 100%;
+    }
+
+    #carousel{
+        width: 100vw;
+    }
+
+    #card{
+        width: 95vw;
+        margin-bottom: 4vh;
+        height: auto;
+    }
+
+    #card > div{
+        width: 80%;
+    }
+
+    #li{
+        margin-top: 2.5vh;
+    }
+
+    #block_2{
+        min-height: 45vh;
+    }
+
+    #block_2_text_h1{
+        text-align: center;
+    }
+
+    #block_2_line{
+        width: 70%;
+        right: 0;
+    }
+
+    #block_2_text_p{
+        text-align: center;
+        font-weight: 400;
+    }
+
+    #block_2_img{
+        height: 0;
+        width: 0;
+    }
+
+    #block_3_text_h3{
+        text-align: center;
+    }
+
+    #block_4{
+        min-height: 70vh;
+    }
+
+    #block_4_text{
+        height: 30vh;
+        margin-top: 5vh;
+    }
+
+    #block_4_text_h1{
+        width: 90vw;
+        font-size: 23pt;
+    }
+
+    #block_4_text_p{
+        margin-bottom: 10vh;
+    }
+
+    .wrapper{
+        width: 70%;
+    }
+
+    #block_5_h1{
+        margin-bottom: 5vh;
+    }
+
+    #block_5_content{
+        max-width: 95vw;
+        min-width: 95vw;
+    }
+
+    #block_5_content_block_h2{
+        text-indent: 0;
+        text-align: center;
+    }
+
+    #block_5_content_block_p{
+        text-align: center;
+    }
+
+    #block_6{
+        min-height: 60vh;
+    }
+
+    #block_6_text{
+        height: 30vh;
+    }
+
+    #block_6_text_h1{
+        font-size: 35pt;
+        width: 95vw;
+    }
+    
+    #block_6_text_p{
+        font-size: 15pt;
+        min-width: 90vw;
+        max-width: 90vw;
+    }
+
+    #block_6_content_block{
+        font-size: 10pt;
+    }
+
+    #block_6_content{
+        height: 20vh;
+    }
+
+    #legal{
+        width: 95vw;
+        left: 0;
+    }
 }
