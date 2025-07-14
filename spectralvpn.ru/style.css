@@ -1,9 +1,9 @@
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/sf-pro-display');
 
 *{
     margin: 0;
     padding: 0;
-    font-family: "Open Sans", sans-serif;
+    font-family: 'SF Pro Display', sans-serif;
     font-weight: 100;
     text-decoration: none;
     color: black;
