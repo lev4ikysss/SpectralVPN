@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 from fastapi import FastAPI, HTTPException, Request
 import subprocess
 import json
@@ -7,15 +6,16 @@ import datetime
 import random
 
 def bash_command(bash_command) :
-    """
-    Выполняет Bash команду и возвращает ответ
-
-    :param bash_command: Команда bash
-    :return: Ответ команды
-    """
     process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
     return output
+
+tarifs = {
+    "None": 0,
+    "Стандартный": 2,
+    "Семейный": 7,
+    "Корпаративный": 100
+}
 
 app = FastAPI()
 
@@ -62,6 +62,7 @@ def registration(user: User_reg, request: Request) :
         "invite_code": hashlib.sha256(str(id).encode())[:8],
         "token_user": hashlib.sha256(str(random.random()).encode()),
         "users_score": 0,
+        "tarif": "None",
         "time_payment": {
             "year": 0,
             "month": 0,
@@ -86,6 +87,7 @@ def registration(user: User_reg, request: Request) :
         "name": Data["users"][id]["name"],
         "email": Data["users"][id]["email"],
         "token-user": Data["users"][id]["token_user"],
+        "tarif": Data["users"][id]["tarif"],
         "users-score": Data["users"][id]["users_score"]
     }
 
@@ -111,23 +113,37 @@ def login(user: User_get) :
         "name": Data["users"][id]["name"],
         "email": Data["users"][id]["email"],
         "token_user": Data["users"][id]["token_user"],
+        "tarif": Data["users"][id]["tarif"],
         "users_score": Data["users"][id]["users_score"]
     }
 
-class wg_mk() :
+#пополнение/покупка тарифа
+
+class wg_form() :
     id: int
+    product: str
     token_user: str
 
 @app.get("/wireguard.make")
-def wg_mk(parameters: wg_mk) :
+def wg_mk(parameters: wg_form) :
+    if not parameters.product in ["Wireguard", "ShadowSocks", "VLESS"] :
+        raise HTTPException(400, "No product")
     with open('main_data.json', 'r') as file :
         Data = json.load(file)
-    if Data["users"][parameters.id]["users_score"] == 0 :
+    if len(Data["users"]) <= parameters.id :
+        raise HTTPException(400, "Unknown user")
+    if Data["users"][parameters.id]["users_score"] <= 0 :
         raise HTTPException(401, "The product has not been purchased")
     if Data["users"][parameters.id]["token_user"] == parameters.token_user :
         raise HTTPException(400, "Incorrect token")
     Data["users"][parameters.id]["users_score"] -= 1
     with open('main_data.json', 'w') as file :
         json.dump(Data, file, indent=4)
-    # Создание и выдача файла
-    
+    num = tarifs[Data["users"][parameters.id]["tarif"]] - Data["users"][parameters.id]["users_score"] + 1
+    if parameters.product == "Wireguard" :
+        answer = bash_command(f"./create_wg.sh {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
+    elif parameters.product == "ShadowSocks" :
+        answer = bash_command(f"./create_ss.sh {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
+    return {
+        "roads": answer.split(",")
+    }
