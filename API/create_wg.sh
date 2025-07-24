@@ -10,6 +10,7 @@ if ! [-e "$WEB_PATH/$1"]; then
 fi
 
 s=$($(cat $WG_PATH/score.bin)+1)
+echo -e "$s" > $WG_PATH/score.bin
 
 wg genkey | tee /tmp/wg-prv-$2-$3 | wg pubkey | tee /tmp/wg-pub-$2-$3
 prk=$(cat /tmp/wg-prv-$2-$3)
