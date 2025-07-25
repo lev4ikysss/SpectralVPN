@@ -140,10 +140,15 @@ def wg_mk(parameters: wg_form) :
     with open('main_data.json', 'w') as file :
         json.dump(Data, file, indent=4)
     num = tarifs[Data["users"][parameters.id]["tarif"]] - Data["users"][parameters.id]["users_score"] + 1
+    answer = ""
+    url = ""
     if parameters.product == "Wireguard" :
         answer = bash_command(f"./create_wg.sh {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
     elif parameters.product == "ShadowSocks" :
         answer = bash_command(f"./create_ss.sh {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
+    elif parameters.product == "VLESS" :
+        url = 
     return {
-        "roads": answer.split(",")
+        "roads": answer.split(","),
+        "protocol": parameters.product
     }
