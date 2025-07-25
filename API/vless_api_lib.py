@@ -52,7 +52,7 @@ class X3API:
             "id": client_uuid,
             "alterId": 90,
             "email": user_id,
-            "limitIp": 3,
+            "limitIp": 1,
             "totalGB": 0,
             "expiryTime": expire_time,
             "enable": True,
@@ -185,6 +185,8 @@ class X3API:
     def _calculate_expiry_time(self, days: int, base_time: int = None) -> int:
         """Вычисление времени окончания подписки"""
         base = base_time or self._current_millis()
+        if days == 0 :
+            return 0
         return base + 86400000 * days
 
     def _get_client_info(self, user_id: str) -> Dict[str, int]:

@@ -147,8 +147,9 @@ def wg_mk(parameters: wg_form) :
     elif parameters.product == "ShadowSocks" :
         answer = bash_command(f"./create_ss.sh {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
     elif parameters.product == "VLESS" :
-        url = 
+        url = bash_command(f"./create_vl.py {parameters.token_user} {Data["users"][parameters.id]["name"]} {num}")
     return {
         "roads": answer.split(","),
+        "url": url,
         "protocol": parameters.product
     }
