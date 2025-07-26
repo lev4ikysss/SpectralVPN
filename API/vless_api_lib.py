@@ -72,7 +72,7 @@ class X3API:
             json=payload
         )
 
-    def update_client(self, days: int, user_id: str) -> requests.Response:
+    def update_client(self, days: int, user_id: str, is_enable: bool) -> requests.Response:
         """
         Обновление данных клиента
         
@@ -93,7 +93,7 @@ class X3API:
                 "limitIp": 3,
                 "totalGB": 0,
                 "expiryTime": new_time,
-                "enable": True,
+                "enable": is_enable,
                 "tgId": user_id,
                 "subId": ""
             }

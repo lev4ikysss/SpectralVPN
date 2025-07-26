@@ -10,6 +10,8 @@ api = X3("#", "#", "#")
 @click.argument("name", type=str)
 @click.argument("number", type=str)
 def main(token, name, number) :
-    api.add_client(0, 0, f"{name}-{number}")
+    status = api.add_client(0, 0, f"{name}-{number}")
+    if status["success"] != True :
+        api.update_client(0, f"{name}-{number}", True)
     url = api.get_connection_link(f"{name}-{number}")
     print(url, end="")
