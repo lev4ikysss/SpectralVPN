@@ -3,7 +3,7 @@
 from vless_api_lib import X3API as X3
 import click
 
-api = X3("#", "#", "#")
+api = X3("#", "#", "#") # {protocol://domain:port} {login} {password}
 
 @click.command()
 @click.argument("token", type=str)
