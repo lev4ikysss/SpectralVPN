@@ -21,6 +21,8 @@ echo -e "\n[Peer]\nPublicKey = $puk\nAllowedIPs = 10.66.66.$s/32\n" >> $WG_PATH/
 echo -e "[Interface]\nAddress = 10.66.66.$s/32\nDNS = 8.8.8.8, 8.8.4.4\nPrivateKey = $prk\n\n[Peer]AllowedIPs = 0.0.0.0/0, ::/0\nEndpoint = $HOST\nPersistentKeepalive = 20\nPublicKey = EjnZqvkE403vSb/INlrQ5y4N3rUHn2xF0bRP97Hp2VY=" > $WEB_PATH/$1/wg-$2-$3.conf
 echo -e "[Interface]\nAddress = 10.66.66.$s/32\nDNS = 8.8.8.8, 8.8.4.4\nPrivateKey = $prk\nJc = 120\nJmin = 98\nJmax = 911\nS1 = 0\nS2 = 0\nH1 = 1\nH2 = 2\nH3 = 3\nH4 = 4\n\n[Peer]AllowedIPs = 0.0.0.0/0, ::/0\nEndpoint = $HOST\nPersistentKeepalive = 20\nPublicKey = EjnZqvkE403vSb/INlrQ5y4N3rUHn2xF0bRP97Hp2VY=" > $WEB_PATH/$1/awg-$2-$3.conf
 
+cp $WEB_PATH/$1/wg-$2-$3.conf $WEB_PATH/$1/awg-$2-$3.conf /etc/configs/
+
 systemctl restart wg-quick@wg0.service
 
 echo -e "/$1/wg-$2-$3.conf,/$1/awg-$2-$3.conf"
