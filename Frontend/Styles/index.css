@@ -1,0 +1,402 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+body{
+    background-color: black;
+    color: white;
+    font-family: 'Inter';
+}
+
+header{
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 0;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: rgb(41, 41, 41);
+}
+
+header h2{
+    margin-left: 2vw;
+}
+
+h2 b{
+    color: aqua;
+}
+
+header div button{
+    height: 4vh;
+    font-size: 14pt;
+    border-width: 0;
+    font-weight: 600;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#register{
+    background-color: black;
+    color: white;
+    border-color: aqua;
+    border-width: 1px;
+    margin-right: 10px;
+    transition: 0.1s;
+}
+
+#register:hover{
+    color: black;
+    background-color: aqua;
+}
+
+#register:active{
+    opacity: 0.7;
+}
+
+#login{
+    background-color: aqua;
+    margin-right: 2vw;
+}
+
+#login:hover{
+    background-color: black;
+    border-color: aqua;
+    border-style: solid;
+    border-width: 1px;
+    color: white;
+}
+
+#login:active{
+    opacity: 0.7;
+}
+
+#main{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 50vh;
+}
+
+#main h1{
+    font-size: 25pt;
+    text-align: center;
+    margin-top: 10vh;
+    line-height: 35pt;
+}
+
+#main h4{
+    margin-top: 1vh;
+    font-size: 13pt;
+    font-weight: 500;
+    max-width: 550px;
+    text-align: center;
+    color: lightgrey;
+    line-height: 20pt;
+}
+
+#main h4 b{
+    font-weight: 700;
+}
+
+#container{
+    display: flex;
+    margin-top: 5vh;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#container div{
+    height: 4vh;
+    width: 100px;
+    background-color: rgba(10, 117, 136, 0.575);
+    border-radius: 7px;
+    border-width: 1px;
+    border-color: aqua;
+    border-style: solid;
+    margin: 5px;
+    color: aqua;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 13pt;
+    font-weight: 700;
+    flex-wrap: wrap;
+}
+
+#main button{
+    margin-top: 3vh;
+    height: 5vh;
+    padding-left: 20px;
+    padding-right: 20px;
+    background-color: aqua;
+    border-radius: 7px;
+    border-style: none;
+    font-size: 14pt;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.1s;
+    margin-bottom: 5vh;
+}
+
+#main button:hover{
+    background-color: black;
+    border-color: aqua;
+    border-style: solid;
+    border-width: 1px;
+    color: white;
+}
+
+#main button:active{
+    opacity: 0.7;
+}
+
+#info{
+    background-color: rgb(7, 7, 7);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding: 5vh;
+    min-height: 30vh;
+    align-items: center;
+    border: 0;
+    border-top: 1px;
+    border-bottom: 1px;
+    border-style: solid;
+    border-color: rgb(27, 27, 27);
+}
+
+#info div{
+    margin: 5vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#info div h1{
+    font-weight: 300;
+    font-size: 25pt;
+    color: lightgray;
+}
+
+#info div h3{
+    font-size: 14pt;
+    margin-top: 1vh;
+}
+
+#info div p{
+    width: 250px;
+    text-align: center;
+    color: gray;
+    margin-top: 1vh;
+}
+
+#final{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 5vh;
+}
+
+#final h2{
+    font-size: 25pt;
+}
+
+#final h3{
+    font-weight: 300;
+    color:gray;
+    margin-top: 2vh;
+    max-width: 500px;
+    text-align: center;
+    line-height: 17pt;
+}
+
+#final button{
+    color: white;
+    background-color: black;
+    border-color: aqua;
+    border-style: solid;
+    border-radius: 7px;
+    padding-left: 20px;
+    padding-right: 20px;
+    height: 5vh;
+    font-size: 15pt;
+    font-weight: 700;
+    margin-top: 3vh;
+    cursor: pointer;
+    transition: 0.1s;
+}
+
+#final button:hover{
+    color: black;
+    background-color: aqua;
+}
+
+#final button:active{
+    opacity: 0.7;
+}
+
+footer{
+    height: 5vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    border: 0;
+    border-top: 1px;
+    border-style: solid;
+    border-color: rgb(41, 41, 41);
+}
+
+footer a{
+    color: darkgray;
+}
+
+footer a:active{
+    color: rgb(109, 109, 109);
+}
+
+footer p{
+    color: darkgray;
+}
+
+@media (width < 600px) {
+    header {
+        height: 10vh;
+        padding: 0 15px;
+        flex-wrap: wrap;
+        width: 91vw;
+    }
+
+    header h2 {
+        margin-left: 0;
+        font-size: 18pt;
+    }
+
+    header div {
+        display: flex;
+        gap: 8px;
+    }
+
+    header div button {
+        font-size: 12pt;
+        height: 4.5vh;
+        padding: 0 12px;
+    }
+
+    #register {
+        margin-right: 0;
+    }
+
+    #login {
+        margin-right: 0;
+    }
+
+    /* Main Section */
+    #main h1 {
+        font-size: 20pt;
+        line-height: 28pt;
+        margin-top: 8vh;
+        padding: 0 20px;
+    }
+
+    #main h4 {
+        font-size: 12pt;
+        line-height: 18pt;
+        padding: 0 20px;
+        max-width: 90%;
+    }
+
+    #container {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
+        margin-top: 4vh;
+        padding: 0 20px;
+    }
+
+    #container div {
+        width: 45%;
+        min-width: 90px;
+        height: 5.5vh;
+        font-size: 11pt;
+        margin: 0;
+    }
+
+    #main button {
+        margin-top: 4vh;
+        height: 6vh;
+        font-size: 13pt;
+        width: 80%;
+        max-width: 300px;
+    }
+
+    /* Info Section */
+    #info {
+        flex-direction: column;
+        padding: 4vh 0;
+        gap: 3vh;
+    }
+
+    #info div {
+        margin: 0;
+        width: 80%;
+        max-width: 300px;
+    }
+
+    #info div h1 {
+        font-size: 22pt;
+    }
+
+    #info div h3 {
+        font-size: 13pt;
+    }
+
+    #info div p {
+        width: 100%;
+        font-size: 12pt;
+        line-height: 16pt;
+    }
+
+    /* Final Section */
+    #final {
+        padding: 6vh 20px;
+    }
+
+    #final h2 {
+        font-size: 20pt;
+        text-align: center;
+    }
+
+    #final h3 {
+        width: 100%;
+        font-size: 12pt;
+        line-height: 18pt;
+        margin-top: 2vh;
+    }
+
+    #final button {
+        width: 80%;
+        max-width: 300px;
+        height: 6vh;
+        font-size: 13pt;
+        margin-top: 4vh;
+    }
+
+    /* Footer */
+    footer {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+        text-align: center;
+        gap: 8px;
+    }
+
+    footer a, footer p {
+        font-size: 11pt;
+    }
+}
