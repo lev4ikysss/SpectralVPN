@@ -6,7 +6,9 @@
     --border: #333355;
 }
 
-*{ box-sizing: border-box; margin:0; padding:0; }
+*{
+    box-sizing: border-box; margin:0; padding:0;
+}
 
 body{
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -32,12 +34,25 @@ header{
     border-bottom: 1px solid var(--border);
 }
 
-h1{ font-size: 2.2rem; color: var(--accent); margin:0; }
-h2{ font-size: 1.5rem; color: var(--accent); margin-top: 2rem; border-left: 4px solid var(--accent); padding-left: 12px; }
-h3{ font-size: 1.2rem; color: #c0c0ff; margin-top: 1.5rem; }
+h1{
+    font-size: 2.2rem; color: var(--accent); margin:0;
+}
 
-p, li{ font-size: 1rem; margin: 0.8rem 0; }
-ul, ol{ padding-left: 20px; }
+h2{
+    font-size: 1.5rem; color: var(--accent); margin-top: 2rem; border-left: 4px solid var(--accent); padding-left: 12px;
+}
+
+h3{
+    font-size: 1.2rem; color: #c0c0ff; margin-top: 1.5rem;
+}
+
+p, li{
+    font-size: 1rem; margin: 0.8rem 0;
+}
+
+ul, ol{
+    padding-left: 20px;
+}
 
 code{
     background: #2a2a3a;
@@ -74,10 +89,18 @@ code{
     font-weight: 600;
     transition: 0.3s;
 }
-.btn:hover{ background: #5a45b0; transform: translateY(-2px); }
 
-a{ color: var(--accent); text-decoration: none; }
-a:hover{ text-decoration: underline; }
+.btn:hover{
+    background: #5a45b0; transform: translateY(-2px);
+}
+
+a{
+    color: var(--accent); text-decoration: none;
+}
+
+a:hover{
+    text-decoration: underline;
+}
 
 @media (max-width: 768px) {
     .container { margin: 20px; padding: 20px; }

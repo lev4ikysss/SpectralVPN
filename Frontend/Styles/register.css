@@ -1,0 +1,133 @@
+:root{
+    --accent: cyan;
+    --bg-dark: rgb(8, 8, 8);
+    --card-bg: rgb(22, 22, 22);
+    --text: #e0e0e0;
+    --border: var(--accent);
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Inter', sans-serif;
+    color: var(--text);
+}
+
+body{
+    background-color: var(--bg-dark);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+form{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 15px;
+    padding: 30px 25px;
+    width: 100%;
+    max-width: 380px;
+}
+
+h1{
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 1.8rem;
+}
+
+label{
+    margin-top: 16px;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    display: block;
+}
+
+.input{
+    padding: 12px 14px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(0, 255, 255, 0.3);
+    border-radius: 10px;
+    color: white;
+    font-size: 1rem;
+    outline: none;
+}
+
+.input:focus{
+    border-color: var(--accent);
+}
+
+.input::placeholder{
+    color: rgba(255, 255, 255, 0.4);
+}
+
+.checkbox-container{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 16px;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.checkbox-container input[type="checkbox"]{
+    accent-color: var(--accent);
+    width: 18px;
+    height: 18px;
+    margin: 0;
+    flex-shrink: 0;
+}
+
+.checkbox-container a{
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+button{
+    margin-top: 24px;
+    padding: 14px;
+    background-color: black;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover{
+    background-color: var(--accent);
+    color: black;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 255, 255, 0.3);
+}
+
+button:active{
+    transform: translateY(0);
+    box-shadow: 0 2px 6px rgba(0, 255, 255, 0.2);
+}
+
+.error{
+    color: #ff6b6b;
+    font-size: 0.85rem;
+    margin-top: 6px;
+    min-height: 20px;
+}
+
+@media (max-width: 480px) {
+    form{
+        padding: 25px 20px;
+    }
+
+    h1{
+        font-size: 1.6rem;
+    }
+}
