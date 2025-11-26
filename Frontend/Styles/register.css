@@ -115,6 +115,11 @@ button:active{
     box-shadow: 0 2px 6px rgba(0, 255, 255, 0.2);
 }
 
+p{
+    text-align: center;
+    margin-top: 2vh;
+}
+
 .error{
     color: #ff6b6b;
     font-size: 0.85rem;
