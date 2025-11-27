@@ -1,23 +1,13 @@
-import configparser
-import fastapi
-from fastapi import HTTPException
+from fastapi import FastAPI, HTTPException
 import utils
 
-config = configparser.ConfigParser()
-config.read('../configs/settings.conf', encoding='utf-8')
-path = config['database']['path']
+app = FastAPI()
+db = utils.DataBase("")
 
-DB = utils.DataBase(path=path)
-
-app = fastapi.FastAPI()
-
-@app.post("/web/registration/")
-def reg(email: str, passwd: str) :
-    code = DB.register_site(email, passwd)
-    if code == 0 :
-        return 200
+@app.post("/registration")
+def reg(email: str, password: str) :
+    answer = db.registration(email, password)
+    if answer["code"] == 1 :
+        HTTPException(400, "Email is busy.")
     else :
-        raise HTTPException(
-            status_code=400,
-            detail="Этот email уже зарегистрирован"
-        )
+        return answer["data"]
