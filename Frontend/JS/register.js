@@ -1,4 +1,5 @@
-const API_URL = "https://spectralvpn.ru:{port}";
+const port = 8000;
+const API_URL = "https://spectralvpn.ru:${port}";
 
 async function sha256(text) {
     const encoder = new TextEncoder();
@@ -90,14 +91,8 @@ async function registration(e) {
         const data = await response.json();
 
         if (response.ok) {
-            alert("Аккаунт успешно создан! Перенаправляем в личный кабинет...");
-            localStorage.setItem("user", JSON.stringify({
-                id: data.id,
-                email: data.email,
-                loggedIn: true,
-                loginTime: Date.now()
-            }));
-            
+            setCookie("email", email, 365);
+            setCookie("hash_passwd", hashedPassword, 365);
             window.location.href = "control-panel.html";
 
         } else {
@@ -122,7 +117,6 @@ document.addEventListener("DOMContentLoaded", () => {
         form.addEventListener("submit", registration);
     }
 
-    // Подсветка полей при фокусе
     document.querySelectorAll('.input').forEach(input => {
         input.addEventListener('focus', () => {
             input.classList.remove('invalid');
