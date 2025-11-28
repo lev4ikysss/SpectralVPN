@@ -6,6 +6,7 @@
     <title>Регистрация - SpectralVPN</title>
     <link rel="stylesheet" href="../Styles/register.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="../JS/register.js"></script>
 </head>
 <body>
     <form id="registerForm" novalidate>
@@ -14,20 +15,16 @@
         <input type="email" id="email" class="input" placeholder="example@domain.com" required autocomplete="email">
         <div class="error" id="emailError"></div>
         <label for="password">Пароль</label>
-        <input type="password" id="password" class="input" placeholder="Минимум 8 символов" required minlength="8" autocomplete="new-password">
+        <input type="password" id="password" class="input" placeholder="Введите пароль">
         <div class="error" id="passwordError"></div>
         <label for="password_reply">Повторите пароль</label>
-        <input type="password" id="password_reply" class="input" placeholder="Повторите пароль" required autocomplete="new-password">
+        <input type="password" id="password_reply" class="input" placeholder="Повторите пароль">
         <div class="error" id="passwordReplyError"></div>
         <div class="checkbox-container">
             <input type="checkbox" id="terms" class="checkbox" required>
             <label for="terms">Я прочитал и согласен с <a href="offer.html" target="_blank">пользовательским соглашением</a> и <a href="privacy.html" target="_blank">политикой конфиденциальности</a>.</label>
         </div>
         <div class="error" id="termsError"></div>
-        <div class="checkbox-container">
-            <input type="checkbox" id="newsletter" class="checkbox">
-            <label for="newsletter">Я хочу получать новости об SpectralVPN на свою электронную почту.</label>
-        </div>
         <button type="submit">Зарегистрироваться</button>
         <p>Уже есть аккаунт? <a href="control-panel.html">Войти</a></p>
     </form>

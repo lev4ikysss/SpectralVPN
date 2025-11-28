@@ -63,3 +63,4 @@ class DataBase :
             return {"code": 1}
         else :
             return {"code": 0, "data": {"id": data["id"]["0"], "email": email, "urls": data["urls"]["0"], "payment": data["payment"]["0"]}}
+        
