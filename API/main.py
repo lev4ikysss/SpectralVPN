@@ -1,9 +1,9 @@
-from fastapi import FastAPI, HTTPException, status
+from fastapi import FastAPI, HTTPException, Query, status
 from pydantic import BaseModel, EmailStr
 import utils
 
 app = FastAPI()
-db = utils.DataBase("")
+methods = utils.API("")
 
 class RegisterBody(BaseModel) :
     email : EmailStr
@@ -13,10 +13,14 @@ class LoginBody(BaseModel) :
     email : EmailStr
     password : str
 
+class UrlsBody(BaseModel) :
+    urls_name : str
+    email : EmailStr
+    password : str
 
 @app.post("/registration", status_code=status.HTTP_201_CREATED)
 def registration(body: RegisterBody) :
-    result = db.registration(body.email, body.password)
+    result = methods.registration(body.email, body.password)
     if result["code"] == 1:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
@@ -26,11 +30,59 @@ def registration(body: RegisterBody) :
     
 @app.post("/login", status_code=status.HTTP_200_OK)
 def login(body: LoginBody) :
-    answer = db.login(body.email, body.password)
+    answer = methods.login(body.email, body.password)
     if answer["code"] == 1 :
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Incorrect email or password."
+        )
+    else :
+        return answer["data"]
+
+@app.post("/add_url", status_code=status.HTTP_200_OK)
+def add_url(body: UrlsBody) :
+    answer = methods.add_url(body.email, body.password, body.urls_name)
+    if answer["code"] == 1 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect email or password."
+        )
+    elif answer["code"] == 2 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The url already exists."
+        )
+    else :
+        return answer["data"]
+
+@app.get("/get_url", status_code=status.HTTP_200_OK)
+def get_url(email: EmailStr = Query(...), password: str = Query(...), urls_name: str = Query(...)) :
+    answer = methods.get_url(email, password, urls_name)
+    if answer["code"] == 1 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect email or password."
+        )
+    elif answer["code"] == 2 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The url does not exist"
+        )
+    else :
+        return answer["data"]
+
+@app.delete("/del_url", status_code=status.HTTP_200_OK)
+def del_url(email: EmailStr = Query(...), password: str = Query(...), urls_name: str = Query(...)) :
+    answer = methods.del_url(email, password, urls_name)
+    if answer["code"] == 1 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Incorrect email or password."
+        )
+    elif answer["code"] == 2 :
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="The url does not exist"
         )
     else :
         return answer["data"]
