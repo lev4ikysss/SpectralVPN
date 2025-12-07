@@ -1,10 +1,11 @@
 import sqlite3
 import pandas
-import py3xui
 import datetime
 import hashlib
 import json
 import uuid
+import requests
+import random
 
 class API :
     def __init__(self, path: str, host: str, username: str, passwd: str, inbaund_id: int, inbaund_url: str, inbaund_port: str) :
@@ -22,8 +23,19 @@ class API :
                         """)
         self.con.commit()
 
-        self.x_ui = py3xui.Api(host, username, passwd)
-        self.x_ui.login()
+        self.x_ui = requests.Session()
+        self.x_ui.verify = True
+        self.x_ui.headers.update({
+            "Content-Type": "application/json",
+            "User-Agent": "Mozilla/5.0 (compatible; py3xui-like)"
+        })
+        response = self.x_ui.post(f"{host}/login", json={
+            "username": username,
+            "password": passwd
+        })
+        response.raise_for_status()
+        self.host = host
+
         self.inbaund_id = inbaund_id
         self.inbaund_url = inbaund_url
         self.inbaund_port = inbaund_port
@@ -36,6 +48,11 @@ class API :
     def get_hash(text: str) -> str:
         return hashlib.sha256(text.encode()).hexdigest()
     
+    def response(self, method: str, endpoint: str, **kwargs) :
+        response = self.x_ui.request(method, f"{self.host}/panel/{endpoint}", **kwargs)
+        response.raise_for_status()
+        return response.json()
+
     def registration(self, email: str, passwd: str) -> dict :
         """
             0 - Success
@@ -84,16 +101,50 @@ class API :
         urls = json.loads(data["urls"]["0"])
         if url_name in urls :
             return {"code": 2}
-
-        uid = str(uuid.uuid4())
-        new_client = py3xui.Client(id=uid, email=f"{email}-{url_name}", enable=True, flow="xtls-rprx-vision")
-        self.x_ui.client.add(self.inbaund_id, new_client)
         
-        inbound = py3xui.Inbound(id=self.inbaund_id)
-        pbk = inbound.stream_settings.reality_settings.get("settings").get("publicKey")
-        wn = inbound.stream_settings.reality_settings.get("serverNames")[0]
-        short_id = inbound.stream_settings.reality_settings.get("shortIds")[0]
-        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={wn}&sid={short_id}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
+        response = self.response("post", "inbound/list")
+        inbaund = None
+        for i in response["obj"] :
+            if i["id"] == self.inbaund_id :
+                inbaund = i
+                break
+        if inbaund == None :
+            raise TypeError
+        stream = json.loads(inbaund["streamSettings"])
+        suid = random.choice(stream["realitySettings"]["shortIds"])
+        sni = random.choice(stream["realitySettings"]["serverNames"])
+        pbk = stream["realitySettings"]["settings"]["publicKey"]
+        uid = str(uuid.uuid4())
+
+        response = self.response("post", "api/inbound/addClient", json={
+            "id": self.inbaund_id,
+            "settings": {
+                "clients":[{
+                    "id": uid,
+                    "flow": "xtls-rprx-vision",
+                    "email": f"{email}-{url_name}",
+                    "limitIp": 0,
+                    "totalGB": 0,
+                    "expiryTime": 0,
+                    "enable": True,
+                    "tgId": "",
+                    "subId": suid,
+                    "comment": "",
+                    "reset": 0
+                }]
+            }
+        })
+        
+        response = self.response("post", "inbound/list")
+        inbaund = None
+        for i in response["obj"] :
+            if i["id"] == self.inbaund_id :
+                inbaund = i
+                break
+        if inbaund == None :
+            raise TypeError
+        
+        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
         
         urls.append(url_name)
 
@@ -125,12 +176,27 @@ class API :
         if not url_name in urls :
             return {"code": 2}
         
-        uid = self.x_ui.client.get_by_email(f"{email}-{url_name}").uuid
-        inbound = py3xui.Inbound(id=self.inbaund_id)
-        pbk = inbound.stream_settings.reality_settings.get("settings").get("publicKey")
-        wn = inbound.stream_settings.reality_settings.get("serverNames")[0]
-        short_id = inbound.stream_settings.reality_settings.get("shortIds")[0]
-        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={wn}&sid={short_id}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
+        response = self.response("post", "inbound/list")
+        inbaund = None
+        for i in response["obj"] :
+            if i["id"] == self.inbaund_id :
+                inbaund = i
+                break
+        if inbaund == None :
+            raise TypeError
+        stream = json.loads(inbaund["streamSettings"])
+        suid = random.choice(stream["realitySettings"]["shortIds"])
+        sni = random.choice(stream["realitySettings"]["serverNames"])
+        pbk = stream["realitySettings"]["settings"]["publicKey"]
+        client = None
+        for i in json.loads(inbaund["settings"]) :
+            if i["email"] == f"{email}-{url_name}" :
+                client = i
+                break
+        if client == None :
+            raise TypeError
+        uid = client["id"]
+        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
         
         return {"code": 0, "data": {"id": int(data["id"]["0"]), "email": email, "urls": urls, "url": url}}
 
@@ -150,8 +216,24 @@ class API :
         if not url_name in urls :
             return {"code": 2}
         
-        uid = self.x_ui.client.get_by_email(f"{email}-{url_name}").uuid
-        self.x_ui.client.delete(self.inbaund_id, uid)
+        response = self.response("post", "inbound/list")
+        inbaund = None
+        for i in response["obj"] :
+            if i["id"] == self.inbaund_id :
+                inbaund = i
+                break
+        if inbaund == None :
+            raise TypeError
+        client = None
+        for i in json.loads(inbaund["settings"]) :
+            if i["email"] == f"{email}-{url_name}" :
+                client = i
+                break
+        if client == None :
+            raise TypeError
+        uid = client["id"]
+        self.response("post", f"inbound/{self.inbaund_id}/delClient/{uid}")
+
         urls.remove(url_name)
         self.cur.execute("""
                                 UPDATE users SET
