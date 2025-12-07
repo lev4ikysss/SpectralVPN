@@ -45,6 +45,7 @@ class API :
             params = ()
         return json.loads(pandas.read_sql(sql_command, self.con, params=params).to_json())
     
+    @staticmethod
     def get_hash(text: str) -> str:
         return hashlib.sha256(text.encode()).hexdigest()
     
@@ -70,9 +71,12 @@ class API :
         data = self.read_table("""
                                 SELECT id FROM users
                                 WHERE email = ?
-                               """, (email))
+                               """, (email,))
         return {"code": 0, "data": {"id": int(data["id"]["0"]), "email": email}}
         
+    def close(self) :
+        self.con.close()
+
     def login(self, email: str, passwd: str) -> dict :
         """
         0 - Success
@@ -116,9 +120,9 @@ class API :
         pbk = stream["realitySettings"]["settings"]["publicKey"]
         uid = str(uuid.uuid4())
 
-        response = self.response("post", "api/inbound/addClient", json={
+        response = self.response("post", "inbound/addClient", json={
             "id": self.inbaund_id,
-            "settings": {
+            "settings": json.dumps({
                 "clients":[{
                     "id": uid,
                     "flow": "xtls-rprx-vision",
@@ -132,7 +136,7 @@ class API :
                     "comment": "",
                     "reset": 0
                 }]
-            }
+            })
         })
         
         response = self.response("post", "inbound/list")
@@ -153,6 +157,7 @@ class API :
                                 urls = ?
                                 WHERE id = ?
                         """, (json.dumps(urls), int(data["id"]["0"])))
+        self.con.commit()
         data = self.read_table("""
                                     SELECT id, urls FROM users
                                     WHERE email = ? AND pass_hash = ?
@@ -189,7 +194,7 @@ class API :
         sni = random.choice(stream["realitySettings"]["serverNames"])
         pbk = stream["realitySettings"]["settings"]["publicKey"]
         client = None
-        for i in json.loads(inbaund["settings"]) :
+        for i in json.loads(inbaund["settings"])["clients"] :
             if i["email"] == f"{email}-{url_name}" :
                 client = i
                 break
@@ -225,7 +230,7 @@ class API :
         if inbaund == None :
             raise TypeError
         client = None
-        for i in json.loads(inbaund["settings"]) :
+        for i in json.loads(inbaund["settings"])["clients"] :
             if i["email"] == f"{email}-{url_name}" :
                 client = i
                 break
@@ -240,6 +245,7 @@ class API :
                                 urls = ?
                                 WHERE id = ?
                         """, (json.dumps(urls), int(data["id"]["0"])))
+        self.con.commit()
         data = self.read_table("""
                                     SELECT id, urls FROM users
                                     WHERE email = ? AND pass_hash = ?

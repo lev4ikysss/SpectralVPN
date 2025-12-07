@@ -1,3 +1,2 @@
 fastapi[all]
 pandas
-py3xui
