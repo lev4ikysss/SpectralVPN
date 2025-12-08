@@ -1,0 +1,7 @@
+https {
+    listen 443;
+    listen [::]:443;
+    server_name spectralvpn.ru;
+
+    root /var/www/html/spectralvpn.ru;
+}

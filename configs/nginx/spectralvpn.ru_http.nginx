@@ -1,0 +1,7 @@
+http {
+    listen 80 spectralvpn.ru;
+    listen [::]:80 spectralvpn.ru;
+
+    root /var/www/html/spectralvpn.ru;
+    Pages/index.html;
+}

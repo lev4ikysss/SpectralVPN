@@ -8,7 +8,7 @@ import requests
 import random
 
 class API :
-    def __init__(self, path: str, host: str, username: str, passwd: str, inbaund_id: int, inbaund_url: str, inbaund_port: str) :
+    def __init__(self, path: str, host: str, username: str, passwd: str, inbaund_id: int, inbaund_url: str) :
         self.con = sqlite3.connect(path)
         self.cur = self.con.cursor()
         self.cur.execute("""
@@ -38,7 +38,6 @@ class API :
 
         self.inbaund_id = inbaund_id
         self.inbaund_url = inbaund_url
-        self.inbaund_port = inbaund_port
 
     def read_table(self, sql_command: str, params=None) -> dict :
         if params == None :
@@ -148,7 +147,7 @@ class API :
         if inbaund == None :
             raise TypeError
         
-        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
+        url = f"vless://{uid}@{self.inbaund_url}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
         
         urls.append(url_name)
 
@@ -201,7 +200,7 @@ class API :
         if client == None :
             raise TypeError
         uid = client["id"]
-        url = f"vless://{uid}@{self.inbaund_url}:{self.inbaund_port}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
+        url = f"vless://{uid}@{self.inbaund_url}?security=reality&pbk={pbk}&fp=random&sni={sni}&sid={suid}&spx=%2F&flow=xtls-rprx-vision#SpectralVPN-{url_name}"
         
         return {"code": 0, "data": {"id": int(data["id"]["0"]), "email": email, "urls": urls, "url": url}}
 

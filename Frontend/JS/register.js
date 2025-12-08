@@ -1,5 +1,5 @@
 const port = 8000;
-const API_URL = "https://spectralvpn.ru:${port}";
+const API_URL = "http://localhost:${port}";
 
 async function sha256(text) {
     const encoder = new TextEncoder();
