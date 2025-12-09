@@ -18,6 +18,7 @@ header{
     padding: 20px 0;
     border-bottom: 1px solid #333;
     margin-bottom: 40px;
+    flex-wrap: wrap;
 }
 
 header h2 {font-size: 24pt;}
