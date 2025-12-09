@@ -9,7 +9,7 @@ server {
     location / {
         if ($request_method = 'OPTIONS') {
             add_header 'Access-Control-Allow-Origin' 'https://spectralvpn.ru';
-            add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+            add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS';
             add_header 'Access-Control-Allow-Headers' 'Content-Type';
             add_header 'Access-Control-Max-Age' 86400;
             return 204;

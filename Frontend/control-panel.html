@@ -1,12 +1,42 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Личный кабинет — SpectralVPN</title>
     <link rel="stylesheet" href="Styles/control-panel.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    
+    <div class="container">
+        <header>
+            <h2><b>Spectral</b>VPN</h2>
+            <div class="user-info" id="userInfo">
+                <span id="userEmail"></span>
+                <button id="logoutBtn">Выйти</button>
+            </div>
+        </header>
+
+        <main id="mainContent" class="hidden">
+            <h1>Ваши конфигурации</h1>
+            <div class="urls-list" id="urlsList"></div>
+            <button class="add-btn" id="addUrlBtn">+ Добавить конфиг</button>
+        </main>
+
+        <div class="modal" id="loginModal">
+            <div class="modal-content">
+                <h2>Вход в аккаунт</h2>
+                <input type="email" id="loginEmail" placeholder="Email" required>
+                <input type="password" id="loginPassword" placeholder="Пароль" required>
+                <div class="error" id="loginError"></div>
+                <div class="buttons">
+                    <button id="loginSubmit">Войти</button>
+                    <button id="closeModal">Отмена</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="JS/control-panel.js"></script>
 </body>
 </html>
