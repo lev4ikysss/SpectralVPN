@@ -1,3 +1,4 @@
 fastapi[all]
 pandas
 configparser
+requests

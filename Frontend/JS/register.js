@@ -1,131 +1,99 @@
-const port = 8000;
-const API_URL = "http://localhost:${port}";
-
-async function sha256(text) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(text);
-    const hash = await crypto.subtle.digest('SHA-256', data);
-    return Array.from(new Uint8Array(hash))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-}
-
-function clearErrors() {
-    document.querySelectorAll('.error').forEach(el => {
-        el.textContent = '';
-        el.classList.remove('active');
-    });
-    document.querySelectorAll('.input, .checkbox').forEach(el => {
-        el.classList.remove('invalid');
-    });
-}
-
-function showError(fieldId, message) {
-    const errorEl = document.getElementById(fieldId);
-    errorEl.textContent = message;
-    errorEl.classList.add('active');
-    
-    const input = document.getElementById(fieldId.replace('Error', ''));
-    if (input) input.classList.add('invalid');
-}
-
-async function registration(e) {
-    e.preventDefault();
-    clearErrors();
-
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value;
-    const passwordReply = document.getElementById("password_reply").value;
-    const terms = document.getElementById("terms").checked;
-
-    let hasError = false;
-
-    if (!email) {
-        showError("emailError", "Введите email");
-        hasError = true;
-    } else if (!/^\S+@\S+\.\S+$/.test(email)) {
-        showError("emailError", "Некорректный email");
-        hasError = true;
-    }
-
-    if (!password) {
-        showError("passwordError", "Введите пароль");
-        hasError = true;
-    } else if (password.length < 6) {
-        showError("passwordError", "Пароль должен быть не менее 6 символов");
-        hasError = true;
-    }
-
-    if (password !== passwordReply) {
-        showError("passwordReplyError", "Пароли не совпадают");
-        hasError = true;
-    }
-
-    if (!terms) {
-        showError("termsError", "Необходимо принять пользовательское соглашение");
-        document.getElementById("terms").classList.add('invalid');
-        hasError = true;
-    }
-
-    if (hasError) return;
-
-    const submitBtn = e.target.querySelector("button[type='submit']");
-    const originalText = submitBtn.textContent;
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Создаём аккаунт...";
-
-    try {
-        const hashedPassword = await sha256(password);
-
-        const response = await fetch(`${API_URL}/registration`, {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                email: email,
-                password: hashedPassword
-            })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-            setCookie("email", email, 365);
-            setCookie("hash_passwd", hashedPassword, 365);
-            window.location.href = "control-panel.html";
-
-        } else {
-            if (data.detail === "Email is busy.") {
-                showError("emailError", "Этот email уже зарегистрирован");
-            } else {
-                alert("Ошибка регистрации: " + (data.detail || "Попробуйте позже"));
-            }
-        }
-    } catch (err) {
-        console.error("Registration error:", err);
-        alert("Нет соединения с сервером. Проверьте интернет или попробуйте позже.");
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.textContent = originalText;
-    }
-}
-
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("registerForm");
-    if (form) {
-        form.addEventListener("submit", registration);
-    }
+    const submitButton = form.querySelector("button[type='submit']");
 
-    document.querySelectorAll('.input').forEach(input => {
-        input.addEventListener('focus', () => {
-            input.classList.remove('invalid');
-            const errorId = input.id + "Error";
-            const errorEl = document.getElementById(errorId);
-            if (errorEl) {
-                errorEl.textContent = '';
-                errorEl.classList.remove('active');
-            }
+    const setError = (fieldId, message) => {
+        const errorEl = document.getElementById(fieldId);
+        const inputEl = errorEl.previousElementSibling;
+        errorEl.textContent = message;
+        errorEl.classList.add("active");
+        if (inputEl) inputEl.classList.add("invalid");
+    };
+
+    const clearErrors = () => {
+        form.querySelectorAll(".error").forEach(el => {
+            el.textContent = "";
+            el.classList.remove("active");
         });
+        form.querySelectorAll(".invalid").forEach(el => el.classList.remove("invalid"));
+        document.querySelector(".checkbox-container")?.classList.remove("invalid");
+    };
+
+    const sha256 = async (message) => {
+        const msgBuffer = new TextEncoder().encode(message);
+        const hashBuffer = await crypto.subtle.digest("SHA-256", msgBuffer);
+        const hashArray = Array.from(new Uint8Array(hashBuffer));
+        return hashArray.map(b => b.toString(16).padStart(2, "0")).join("");
+    };
+
+    form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        clearErrors();
+
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+        const passwordReply = document.getElementById("password_reply").value;
+        const terms = document.getElementById("terms").checked;
+
+        let hasError = false;
+
+        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setError("emailError", "Введите корректный email");
+            hasError = true;
+        }
+        if (!password || password.length < 6 || !/(?=.*[A-Za-z])(?=.*\d)/.test(password)) {
+            setError("passwordError", "Минимум 6 символов, буквы + цифры");
+            hasError = true;
+        }
+        if (password !== passwordReply) {
+            setError("passwordReplyError", "Пароли не совпадают");
+            hasError = true;
+        }
+        if (!terms) {
+            setError("termsError", "Принять условия обязательно");
+            document.querySelector(".checkbox-container").classList.add("invalid");
+            hasError = true;
+        }
+
+        if (hasError) return;
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Создаём аккаунт...";
+
+        try {
+            const passwordHash = await sha256(password);
+
+            const response = await fetch("https://spectralvpn.ru:8500/registration", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: email,
+                    password: passwordHash
+                })
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                Cookies.set("user_email", email, { expires: 30, sameSite: "strict" });
+                Cookies.set("user_hash", passwordHash, { expires: 30, sameSite: "strict" });
+
+                window.location.href = "control-panel.html";
+            } else {
+                if (result.detail === "Email is busy.") {
+                    setError("emailError", "Этот email уже зарегистрирован");
+                } else {
+                    setError("emailError", result.detail || "Ошибка сервера");
+                }
+            }
+        } catch (err) {
+            console.error(err);
+            setError("emailError", "Нет связи с сервером");
+        } finally {
+            submitButton.disabled = false;
+            submitButton.textContent = "Зарегистрироваться";
+        }
     });
 });
