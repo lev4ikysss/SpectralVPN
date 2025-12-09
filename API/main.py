@@ -6,7 +6,7 @@ import utils
 app = FastAPI()
 
 config = configparser.ConfigParser()
-config.read('../configs/config/params.conf', encoding='utf-8')
+config.read('params.conf', encoding='utf-8')
 args = [config["api"]["path"], config["api"]["host"], config["api"]["username"], config["api"]["password"], config.getint("api", "inbaund_id"), config["api"]["inbaund_url"]]
 
 class RegisterBody(BaseModel) :
