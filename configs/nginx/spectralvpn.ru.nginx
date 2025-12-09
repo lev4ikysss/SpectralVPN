@@ -3,5 +3,17 @@ https {
     listen [::]:443;
     server_name spectralvpn.ru;
 
+    ssl_certificate /etc/letsencrypt/live/spectralvpn.ru/fullchain.pem
+    ssl_certificate_key /etc/letsencrypt/live/spectralvpn.ru/privkey.pem
+
+    gzip on;
+    gzip_types text/css text/javascript text/plain application/javascript application/json;
+    gzip_min_lenght 1000;
+
     root /var/www/html/spectralvpn.ru;
+    index.html;
+
+    location / {
+        try_files $uri $uri/ =400;
+    }
 }

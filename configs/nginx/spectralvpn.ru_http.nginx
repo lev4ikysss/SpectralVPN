@@ -1,7 +1,6 @@
-http {
-    listen 80 spectralvpn.ru;
-    listen [::]:80 spectralvpn.ru;
-
-    root /var/www/html/spectralvpn.ru;
-    Pages/index.html;
+https {
+    listen 80;
+    listen [::]:80;
+    server_name spectralvpn.ru;
+    return 301 https://$host$request_uri;
 }
