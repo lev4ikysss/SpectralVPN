@@ -1,10 +1,10 @@
-https {
-    listen 8500;
-    liste [::]:8500;
+server {
+    listen 8500 ssl;
+    listen [::]:8500 ssl;
     server_name spectralvpn.ru;
 
-    ssl_certificate /etc/letsencrypt/live/spectralvpn.ru/fullchain.pem
-    ssl_certificate_key /etc/letsencrypt/live/spectralvpn.ru/privkey.pem
+    ssl_certificate /etc/letsencrypt/live/spectralvpn.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/spectralvpn.ru/privkey.pem;
 
     location / {
         proxy_pass http://127.0.0.1:8000;
