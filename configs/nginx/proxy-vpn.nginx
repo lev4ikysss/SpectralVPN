@@ -1,0 +1,14 @@
+stream {
+    upstream vless_backend {
+        server vpn.spectralvpn.ru:442;
+    }
+
+    server {
+        listen 442 reuseport;
+        listen [::]:442 reuseport;
+        proxy_pass vless_backend;
+        proxy_protocol on;
+        proxy_timeout 30s;
+        proxy_connect_timeout 10s;
+    }
+}
