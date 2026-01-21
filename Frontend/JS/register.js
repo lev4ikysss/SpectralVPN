@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         try {
             const passwordHash = await sha256(password);
 
-            const response = await fetch("https://spectralvpn.ru:8500/registration", {
+            const response = await fetch("https://vpn.spectralvpn.ru:8500/registration", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

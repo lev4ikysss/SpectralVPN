@@ -1,4 +1,4 @@
-const API_BASE = "https://spectralvpn.ru:8500";
+const API_BASE = "https://vpn.spectralvpn.ru:8500";
 
 const getCookie = (name) => {
     const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
