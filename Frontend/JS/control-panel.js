@@ -207,17 +207,13 @@ document.getElementById("closeModal").onclick = hideModal;
 
 tryAutoLogin();
 
-// Переключение инструкций по платформам
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
-        // Убираем active у всех кнопок
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
 
-        // Скрываем все инструкции
         document.querySelectorAll('.instructions').forEach(el => el.classList.add('hidden'));
 
-        // Показываем нужную
         const platform = btn.dataset.platform;
         const target = document.getElementById(`${platform}-instructions`);
         if (target) {
@@ -226,7 +222,4 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// Показываем Android по умолчанию при загрузке (если нужно)
-document.addEventListener('DOMContentLoaded', () => {
-    // можно оставить как есть — первая вкладка уже active в HTML
-});
+document.addEventListener('DOMContentLoaded', () => {});
