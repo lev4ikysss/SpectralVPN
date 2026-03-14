@@ -18,6 +18,52 @@
         </header>
 
         <main id="mainContent" class="hidden">
+            <div class="how-to-connect">
+                <h1>Как подключиться</h1>
+                
+                <div class="platform-tabs">
+                    <button class="tab-btn active" data-platform="android">Android</button>
+                    <button class="tab-btn" data-platform="windows">ПК (Windows)</button>
+                    <button class="tab-btn" data-platform="ios">iOS</button>
+                </div>
+
+                <div class="instructions" id="android-instructions">
+                    <ol>
+                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
+                        <li>Скачайте и установите <a href="https://github.com/2dust/v2rayNG/releases/download/2.0.13/v2rayNG_2.0.13_universal.apk" target="_blank" rel="noopener">приложение v2rayNG</a>.</li>
+                        <li>Откройте приложение.</li>
+                        <li>Нажмите <b>+</b> в правом верхнем углу → <b>Импорт из буфера обмена</b>.</li>
+                        <li><b>Готово!</b> Включайте/выключайте соединение большой кнопкой внизу справа.</li>
+                    </ol>
+                </div>
+
+                <div class="instructions hidden" id="windows-instructions">
+                    <ol>
+                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
+                        <li>Скачайте и установите <a href="https://github.com/qr243vbi/nekobox/releases/download/5.10.25/nekobox-5.10.25-windows64-installer.exe" target="_blank" rel="noopener">NekoBox for Windows</a>.</li>
+                        <li>Откройте программу.</li>
+                        <li>Нажмите <kbd>Ctrl</kbd> + <kbd>V</kbd> — конфигурация добавится автоматически.</li>
+                        <li>Выделите добавленную конфигурацию и нажмите <kbd>Enter</kbd>.</li>
+                        <li>Вверху включите:
+                            <ul>
+                                <li><b>Системный прокси</b> — для работы в браузерах</li>
+                                <li><b>Режим TUN</b> — для всей системы</li>
+                            </ul>
+                        </li>
+                        <li><b>Готово!</b> Вы подключены.</li>
+                    </ol>
+                </div>
+
+                <div class="instructions hidden" id="ios-instructions">
+                    <ol>
+                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
+                        <li>Скачайте приложение <a href="https://apps.apple.com/ru/app/v2raytun/id6476628951" target="_blank" rel="noopener">V2RayTun</a> из App Store.</li>
+                        <li>Откройте приложение.</li>
+                        <li>Нажмите <b>+</b> в правом верхнем углу → <b>Импорт из буфера обмена</b>.</li>
+                        <li><b>Готово!</b> Включайте/выключайте соединение центральной кнопкой.</li>
+                    </ol>
+                </div>
+            </div>
             <h1>Ваши конфигурации</h1>
             <div class="urls-list" id="urlsList"></div>
             <button class="add-btn" id="addUrlBtn">+ Добавить конфиг</button>
