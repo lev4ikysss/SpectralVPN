@@ -75,6 +75,7 @@ class API :
         
     def close(self) :
         self.con.close()
+        self.x_ui.close()
 
     def login(self, email: str, passwd: str) -> dict :
         """
