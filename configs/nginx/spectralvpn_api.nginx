@@ -1,15 +1,14 @@
 server {
     listen 8500 ssl;
     listen [::]:8500 ssl;
-    server_name vpn.spectralvpn.ru;
+    server_name spectralvpn.ru;
 
-    ssl_certificate /etc/letsencrypt/live/vpn.spectralvpn.ru/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/vpn.spectralvpn.ru/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/spectralvpn.ru/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/spectralvpn.ru/privkey.pem;
     
     location / {
         if ($request_method = 'OPTIONS') {
             add_header 'Access-Control-Allow-Origin' 'https://spectralvpn.ru';
-            add_header 'Access-Control-Allow-Origin' 'https://vpn.spectralvpn.ru';
             add_header 'Access-Control-Allow-Methods' 'GET, POST, DELETE, OPTIONS';
             add_header 'Access-Control-Allow-Headers' 'Content-Type';
             add_header 'Access-Control-Max-Age' 86400;
@@ -25,6 +24,5 @@ server {
         proxy_set_header   X-Forwarded-Port $server_port;
 
         add_header Access-Control-Allow-Origin "https://spectralvpn.ru" always;
-        add_header Access-Control-Allow-Origin "https://vpn.spectralvpn.ru" always;
     }
 }
