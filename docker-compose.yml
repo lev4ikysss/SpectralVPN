@@ -1,0 +1,25 @@
+services:
+  #api:
+    # Todo
+  #web:
+    # Todo
+  db:
+    image: postgres:latest
+    container_name: spectralvpn-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${DB_USER}", "-d", "${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db-data:/var/lib/postgresql
+    ports:
+      - 5432:5432
+
+volumes:
+  db-data:

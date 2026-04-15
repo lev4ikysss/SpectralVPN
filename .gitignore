@@ -1,2 +1,6 @@
 .venv
-configs/config/params_spectralvpn.conf
+.env
+API/__pycache__
+API/models/__pycache__
+API/routers/__pycache__
+API/schemas/__pycache__
