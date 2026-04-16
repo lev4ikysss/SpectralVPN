@@ -123,13 +123,18 @@ class XUIClient:
     async def get_client_traffic(self, client_email: str) -> int:
         await self._login()
         try:
-            resp = await self.session.post(
-                f"{self.base_url}/panel/inbound/getClientTraffics/{client_email}"
-            )
+            resp = await self.session.post(f"{self.base_url}/panel/inbound/list")
             resp.raise_for_status()
             data = resp.json()
-            obj = data.get("obj", {})
-            return obj.get("down", 0) + obj.get("up", 0)
+            inbounds = data.get("obj")
+            for inbound in inbounds:
+                client_stats = inbound.get("clientStats")
+                for stat in client_stats:
+                    if stat.get("email") == client_email:
+                        up = stat.get("up")
+                        down = stat.get("down")
+                        return up + down
+            return 0
         except:
             return 0
 
