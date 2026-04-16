@@ -1,22 +1,26 @@
 import json
 import uuid
 import random
+from urllib.parse import quote
 from httpx import AsyncClient
 from fastapi import HTTPException
 
 class XUIClient:
-    def __init__(self, base_url: str, username: str, password: str):
+    def __init__(self, host: str, base_url: str, username: str, password: str, inbound_id: int, version: str):
+        self.host = host
         self.base_url = base_url.rstrip("/")
         self.username = username
         self.password = password
+        self.inbound_id = inbound_id
         self.session = AsyncClient(timeout=20.0)
         self.logged_in = False
+        self.version = version
 
     @classmethod
     async def from_server(cls, server):
         #TODO заменить на https
         base_url = f"http://{server.host}:{server.port}"
-        return cls(base_url, server.user, server.password)
+        return cls(server.host, base_url, server.user, server.password, server.inbound_id, server.version)
 
     async def _login(self):
         if self.logged_in:
@@ -34,28 +38,28 @@ class XUIClient:
                 detail="Server error"
             )
 
-    async def add_client(self, inbound_id: int, client_email: str, display_name: str) -> str:
+    async def add_client(self, client_email: str, display_name: str) -> str:
         await self._login()
         resp = await self.session.post(f"{self.base_url}/panel/inbound/list")
         resp.raise_for_status()
         data = resp.json()
-        inbounds = data.get("obj", [])
-        inbound = next((i for i in inbounds if i.get("id") == inbound_id), None)
+        inbounds = data.get("obj")
+        inbound = next((i for i in inbounds if i.get("id") == self.inbound_id), None)
         if not inbound:
             raise HTTPException(
                 status_code=404,
                 detail=f"Server not found"
             )
-        stream_settings = json.loads(inbound.get("streamSettings", "{}"))
-        reality = stream_settings.get("realitySettings", {})
-        short_ids = reality.get("shortIds", [""])
-        server_names = reality.get("serverNames", {})
+        stream_settings = json.loads(inbound.get("streamSettings"))
+        reality = stream_settings.get("realitySettings")
+        short_ids = reality.get("shortIds")
+        server_names = reality.get("serverNames")
         suid = random.choice(short_ids)
         sni = random.choice(server_names)
-        pbk = reality.get("settings", {}).get("publicKey", "")
+        pbk = reality.get("settings").get("publicKey")
         client_uuid = str(uuid.uuid4())
         add_payload = {
-            "id": inbound_id,
+            "id": self.inbound_id,
             "settings": json.dumps({
                 "clients": [{
                     "id": client_uuid,
@@ -74,15 +78,43 @@ class XUIClient:
         }
         resp = await self.session.post(f"{self.base_url}/panel/inbound/addClient", json=add_payload)
         resp.raise_for_status()
-        host = inbound.get("remark")
+        resp = await self.session.post(f"{self.base_url}/panel/inbound/list")
+        resp.raise_for_status()
+        data = resp.json()
+        inbounds = data.get("obj")
+        inbound = next((i for i in inbounds if i.get("id") == self.inbound_id), None)
+        if not inbound:
+            raise HTTPException(
+                status_code=500,
+                detail="Server error"
+            )
+        settings = json.loads(inbound.get("settings"))
+        clients = settings.get("clients")
+        current_client = next((i for i in clients if i.get("email") == client_email), None)
+        if not current_client:
+            raise HTTPException(
+                status_code=500,
+                detail="Server error"
+            )
+        client_uuid = current_client.get("id")
+        sub_id = current_client.get("subId")
+        stream_settings = json.loads(inbound.get("streamSettings"))
+        reality = stream_settings.get("realitySettings")
+        server_names = reality.get("serverNames")
+        setting = reality.get("settings")
+        pbk = setting.get("publicKey")
+        fp = setting.get("fingerprint")
+        spx = quote(setting.get("spiderX"), safe='')
+        sni = random.choice(server_names)
+        port = inbound.get("port")
         config_url = (
-            f"vless://{client_uuid}@{host}?"
+            f"vless://{client_uuid}@{self.host}:{port}?"
             f"security=reality&"
             f"pbk={pbk}&"
-            f"fp=random&"
+            f"fp={fp}&"
             f"sni={sni}&"
-            f"sid={suid}&"
-            f"spx=%2F&"
+            f"sid={sub_id}&"
+            f"spx={spx}&"
             f"flow=xtls-rprx-vision#"
             f"{display_name}"
         )
@@ -101,11 +133,11 @@ class XUIClient:
         except:
             return 0
 
-    async def delete_client(self, inbound_id: int, client_email: str):
+    async def delete_client(self, client_email: str):
         await self._login()
         try:
             resp = await self.session.post(
-                f"{self.base_url}/panel/inbound/{inbound_id}/delClientByEmail/{client_email}"
+                f"{self.base_url}/panel/inbound/{self.inbound_id}/delClientByEmail/{client_email}"
             )
             resp.raise_for_status()
             return

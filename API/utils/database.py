@@ -3,9 +3,7 @@ from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession, async_sessionmaker,AsyncEngine
 
 engine: AsyncEngine = create_async_engine(
-    #Todo Изменить на env, плдключение к db
-    f"postgresql+asyncpg://spectral:spectral@localhost:5432/spectral",
-    echo=True, #Todo удалить
+    f"postgresql+asyncpg://{getenv("DB_USER")}:{getenv("DB_PASSWORD")}@db:5432/{getenv("DB_NAME")}",
     pool_pre_ping=True
 )
 

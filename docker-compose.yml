@@ -1,6 +1,22 @@
 services:
-  #api:
-    # Todo
+  api:
+    build:
+      context: ./API
+      dockerfile: Dockerfile
+    container_name: spectralvpn-api
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    extra_hosts:
+      - host.docker.internal:172.17.0.1
+    ports:
+      - 8000:8000
+    
   #web:
     # Todo
   db:

@@ -42,7 +42,6 @@ async def create_config(body: ConfigCreate, current_user: User = Depends(get_cur
     client_email_xui = f"{current_user.email}-{body.name}"
     display_name = f"SpectralVPN-{body.name}"
     config_url = await xui.add_client(
-        inbound_id=server.inbound_id,
         client_email=client_email_xui,
         display_name=display_name
     )
@@ -119,10 +118,10 @@ async def delete_config(body: ConfigDelete, current_user: User = Depends(get_cur
             .options(selectinload(User.server))
         )
         server = server_result.scalar_one().server
-        if server and server.inbound_id:
+        if server:
             xui = await XUIClient.from_server(server)
             client_email_xui = f"{current_user.email}-{body.name}"
-            await xui.delete_client(server.inbound_id, client_email_xui)
+            await xui.delete_client(client_email_xui)
     except:
         HTTPException(
             status_code=500,

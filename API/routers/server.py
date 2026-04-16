@@ -10,27 +10,26 @@ router = APIRouter(prefix="/server")
 
 @router.post("/add", status_code=201)
 async def add_server(body: ServerAdd, request: Request, db: AsyncSession = Depends(get_db)):
-    ip = request.client.host
     existing = await db.execute(
         select(Server).where(
             (Server.name == body.name) |
-            (Server.code == body.code) |
-            (Server.host == ip)
+            (Server.code == body.code)
         )
     )
     if existing.scalar_one_or_none():
         raise HTTPException(
             status_code=409,
-            detail="Name, ip or code is already exists"
+            detail="Nameor code is already exists"
         )
     new_server = Server(
         name=body.name,
         code=body.code,
-        host=ip,
+        host=body.host,
         port=body.port,
         user=body.user,
         password=body.password,
-        inbound_id=body.inbound_id
+        inbound_id=body.inbound_id,
+        version=body.version
     )
     db.add(new_server)
     await db.commit()
