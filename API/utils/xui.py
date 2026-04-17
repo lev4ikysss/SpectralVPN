@@ -123,6 +123,7 @@ class XUIClient:
         resp.raise_for_status()
         if self.version == "legacy":
             resp = await self.session.post(f"{self.base_url}/panel/inbound/addClient", json=configs.legacy_payload(resp.json()))
+        #New configs here
         else:
             raise HTTPException(
                 status_code=500,
@@ -133,6 +134,7 @@ class XUIClient:
         resp.raise_for_status()
         if self.version == "legacy":
             return configs.legacy_config(resp.json())
+        #New configs here
         else:
             raise HTTPException(
                 status_code=500,
