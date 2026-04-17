@@ -8,7 +8,7 @@ from .server import Server
 class User(Base):
     __tablename__ = "users"
     id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    email: Mapped[str] = mapped_column(String(256), index=True, nullable=False, unique=True)
+    email: Mapped[str] = mapped_column(String(256), index=True, nullable=False)
     pass_hash: Mapped[str] = mapped_column(String(512), nullable=False)
     server_id: Mapped[int] = mapped_column(ForeignKey("servers.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=func.now(), nullable=False)
