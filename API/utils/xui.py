@@ -96,8 +96,7 @@ class XUIClient:
 
     @classmethod
     async def from_server(cls, server):
-        #TODO заменить на https
-        base_url = f"http://{server.host}:{server.port}"
+        base_url = f"https://{server.host}:{server.port}"
         return cls(server.host, base_url, server.user, server.password, server.inbound_id, server.version)
 
     async def _login(self):

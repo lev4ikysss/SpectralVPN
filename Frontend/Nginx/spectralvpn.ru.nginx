@@ -10,7 +10,7 @@ server {
     gzip_types text/css text/javascript text/plain application/javascript application/json;
     gzip_min_length 1000;
 
-    root /var/www/html/spectralvpn.ru;
+    root /usr/share/nginx/html/;
     index index.html;
 
     location / {

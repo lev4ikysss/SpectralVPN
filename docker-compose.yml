@@ -1,8 +1,6 @@
 services:
   api:
-    build:
-      context: ./API
-      dockerfile: Dockerfile
+    build: ./API
     container_name: spectralvpn-api
     restart: unless-stopped
     depends_on:
@@ -16,9 +14,15 @@ services:
       - host.docker.internal:172.17.0.1
     ports:
       - 8000:8000
-    
-  #web:
-    # Todo
+  web:
+    build: ./Frontend
+    container_name: spectralvpn-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - 80:80
+      - 443:443
   db:
     image: postgres:latest
     container_name: spectralvpn-db
