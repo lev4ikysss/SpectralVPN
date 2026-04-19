@@ -1,261 +1,294 @@
-:root{
+:root {
     --bg: #000;
     --card: #111;
     --text: #e0e0e0;
-    --accent: cyan;
+    --accent: #00ffff;
     --border: #333;
+    --danger: #ff4444;
 }
 
-*{margin: 0; padding: 0; box-sizing: border-box;}
-body{background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; min-height: 100vh;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    line-height: 1.5;
+}
 
-.container{max-width: 800px; margin: 0 auto; padding: 20px;}
+.container { max-width: 820px; margin: 0 auto; padding: 20px; }
 
-header{
+header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border);
     margin-bottom: 40px;
     flex-wrap: wrap;
+    gap: 15px;
 }
 
-header h2 {font-size: 24pt;}
-header h2 b {color: var(--accent);}
+header h2 { font-size: 28px; }
+header h2 b { color: var(--accent); }
 
-.user-info{
+.user-info {
     display: flex;
     align-items: center;
     gap: 15px;
-    font-size: 14pt;
+    font-size: 15px;
 }
 
-#logoutBtn{
+#logoutBtn {
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent);
-    padding: 8px 16px;
+    padding: 8px 18px;
     border-radius: 8px;
     cursor: pointer;
     transition: 0.3s;
 }
 
-#logoutBtn:hover{
+#logoutBtn:hover {
     background: var(--accent);
     color: #000;
 }
 
-h1{
-    font-size: 28pt;
-    margin-bottom: 30px;
+h1 {
+    font-size: 26px;
+    margin-bottom: 25px;
     text-align: center;
 }
 
-.urls-list{
+.urls-list {
     display: grid;
-    gap: 15px;
+    gap: 16px;
     margin-bottom: 30px;
 }
 
-.url-card{
+.url-card {
     background: var(--card);
-    border: 1px solid #333;
-    border-radius: 12px;
+    border: 1px solid var(--border);
+    border-radius: 14px;
     padding: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: 0.3s;
+    transition: all 0.3s ease;
 }
 
-.url-card:hover{
+.url-card:hover {
     border-color: var(--accent);
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.15);
 }
 
-.url-name{
+.url-info {
+    flex: 1;
+}
+
+.url-name {
     font-weight: 600;
     color: var(--accent);
+    font-size: 17px;
 }
 
-.url-actions{
+.traffic {
+    font-size: 13.5px;
+    color: #888;
+    margin-top: 4px;
+}
+
+.url-actions {
     display: flex;
     gap: 10px;
 }
 
-.btn-copy, .btn-delete{
-    padding: 8px 16px;
+.btn {
+    padding: 9px 18px;
     border-radius: 8px;
     cursor: pointer;
     font-weight: 600;
     transition: 0.3s;
+    border: none;
 }
 
-.btn-copy{
+.btn-copy {
     background: transparent;
     border: 1px solid var(--accent);
     color: var(--accent);
 }
 
-.btn-copy:hover{
+.btn-copy:hover {
     background: var(--accent);
     color: #000;
 }
 
-.btn-delete{
-    background: #330000;
+.btn-delete {
+    background: #2a0a0a;
     border: 1px solid #800;
-    color: #f88;
+    color: #ff8888;
 }
 
-.btn-delete:hover{
+.btn-delete:hover {
     background: #800;
     color: white;
 }
 
-.add-btn{
+.add-btn {
     width: 100%;
-    padding: 16px;
+    padding: 18px;
     background: transparent;
     border: 2px dashed var(--accent);
     color: var(--accent);
-    font-size: 16pt;
+    font-size: 17px;
+    font-weight: 600;
     border-radius: 12px;
     cursor: pointer;
-    transition:hover{
-        background: rgba(0, 255, 255, 0.1);
-    }
+    transition: 0.3s;
 }
 
-.modal{
-    display: none;
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    justify-content: center;
-    align-items: center;
-    z-index: 1000;
+.add-btn:hover {
+    background: rgba(0, 255, 255, 0.08);
 }
 
-.modal.active{display: flex;}
-
-.modal-content{
-    background: #111;
-    padding: 30px;
-    border-radius: 16px;
-    width: 90%;
-    max-width: 400px;
-    border: 1px solid var(--accent);
+.danger-zone {
+    margin-top: 60px;
     text-align: center;
 }
 
-.modal-content input{
-    width: 100%;
-    padding: 14px;
-    margin: 10px 0;
-    background: #222;
-    border: 1px solid #444;
+.delete-account-btn {
+    background: #3a0a0a;
+    color: var(--danger);
+    border: 1px solid #a00;
+    padding: 12px 28px;
     border-radius: 10px;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.delete-account-btn:hover {
+    background: #600;
     color: white;
 }
 
-.modal-content .error{
-    color: #ff6b6b;
-    margin: 10px 0;
-    min-height: 20px;
+/* Модальное окно */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
 }
 
-.buttons{
+.modal.active { display: flex; }
+
+.modal-content {
+    background: #111;
+    padding: 32px;
+    border-radius: 16px;
+    width: 90%;
+    max-width: 420px;
+    border: 1px solid var(--accent);
+}
+
+.modal-content h2 { margin-bottom: 20px; text-align: center; }
+
+.modal-content input {
+    width: 100%;
+    padding: 14px;
+    margin-bottom: 15px;
+    background: #222;
+    border: 1px solid #555;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+}
+
+.error {
+    color: #ff6b6b;
+    min-height: 22px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.buttons {
     display: flex;
-    gap: 10px;
+    gap: 12px;
     margin-top: 20px;
 }
 
-.buttons button{
+.buttons button {
     flex: 1;
-    padding: 12px;
+    padding: 14px;
     border-radius: 10px;
     cursor: pointer;
-}
-
-#loginSubmit{
-    background: var(--accent);
-    color: black;
-    border: none;
-}
-
-#closeModal{
-    background: transparent;
-    border: 1px solid #666;
-    color: #aaa;
-}
-
-.how-to-connect{
-    margin-bottom: 60px;
-}
-
-.platform-tabs{
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin-bottom: 32px;
-    flex-wrap: wrap;
-}
-
-.tab-btn{
-    background: #1a1a1a;
-    border: 1px solid #444;
-    color: #aaa;
-    padding: 12px 24px;
-    border-radius: 50px;
-    font-size: 15px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.22s ease;
-}
-
-.tab-btn:hover{
-    border-color: #666;
-    color: #ddd;
-    background: #222;
-}
-
-.tab-btn.active{
-    background: var(--accent);
-    color: #000;
-    border-color: var(--accent);
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.25);
     font-weight: 600;
 }
 
-.instructions{
+#addSubmit {
+    background: var(--accent);
+    color: #000;
+    border: none;
+}
+
+#addCancel {
+    background: transparent;
+    border: 1px solid #666;
+    color: #ccc;
+}
+
+/* Табы и инструкции (оставил твои стили, только немного подчистил) */
+.platform-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 30px;
+    flex-wrap: wrap;
+}
+
+.tab-btn {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    color: #aaa;
+    padding: 11px 22px;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.25s;
+}
+
+.tab-btn.active,
+.tab-btn:hover {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+}
+
+.instructions {
     background: var(--card);
     border: 1px solid #333;
     border-radius: 16px;
-    padding: 28px 32px;
-    transition: all 0.3s ease;
+    padding: 26px 30px;
 }
 
-.instructions ol{
+.instructions ol {
     counter-reset: step;
     list-style: none;
-    font-size: 15.5px;
-    line-height: 1.65;
 }
 
-.instructions li{
+.instructions li {
     position: relative;
-    padding-left: 38px;
-    margin-bottom: 18px;
+    padding-left: 42px;
+    margin-bottom: 16px;
 }
 
-.instructions li::before{
+.instructions li::before {
     content: counter(step);
     counter-increment: step;
     position: absolute;
     left: 0;
-    top: 2px;
+    top: 0;
     width: 28px;
     height: 28px;
     background: #222;
@@ -265,37 +298,7 @@ h1{
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 14px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
-.instructions a{
-    color: var(--accent);
-    text-decoration: none;
-    border-bottom: 1px solid rgba(0,255,255,0.3);
-    transition: all 0.2s;
-}
-
-.instructions a:hover{
-    border-bottom-color: var(--accent);
-    color: #00ffff;
-}
-
-.instructions kbd{
-    background: #1e1e1e;
-    border: 1px solid #444;
-    border-radius: 5px;
-    padding: 3px 7px;
-    font-family: monospace;
-    color: #aaa;
-}
-
-.instructions ul{
-    margin: 12px 0 12px 24px;
-    list-style: disc;
-    color: #bbb;
-}
-
-.hidden{
-    display: none !important;
-}
+.hidden { display: none !important; }

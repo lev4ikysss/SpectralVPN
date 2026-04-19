@@ -11,73 +11,87 @@
     <div class="container">
         <header>
             <h2><b>Spectral</b>VPN</h2>
-            <div class="user-info" id="userInfo">
+            <div class="user-info" id="userInfo" style="display: none;">
                 <span id="userEmail"></span>
                 <button id="logoutBtn">Выйти</button>
             </div>
         </header>
 
+        <!-- Главный контент (скрыт, пока не авторизован) -->
         <main id="mainContent" class="hidden">
+            <!-- Как подключиться -->
             <div class="how-to-connect">
                 <h1>Как подключиться</h1>
-                
                 <div class="platform-tabs">
                     <button class="tab-btn active" data-platform="android">Android</button>
-                    <button class="tab-btn" data-platform="windows">ПК (Windows)</button>
+                    <button class="tab-btn" data-platform="windows">Windows</button>
                     <button class="tab-btn" data-platform="ios">iOS</button>
                 </div>
 
                 <div class="instructions" id="android-instructions">
                     <ol>
-                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
-                        <li>Скачайте и установите <a href="https://github.com/2dust/v2rayNG/releases/download/2.0.13/v2rayNG_2.0.13_universal.apk" target="_blank" rel="noopener">приложение v2rayNG</a>.</li>
-                        <li>Откройте приложение.</li>
-                        <li>Нажмите <b>+</b> в правом верхнем углу → <b>Импорт из буфера обмена</b>.</li>
-                        <li><b>Готово!</b> Включайте/выключайте соединение большой кнопкой внизу справа.</li>
+                        <li>Создайте конфигурацию ниже и скопируйте ссылку.</li>
+                        <li>Установите <a href="https://github.com/2dust/v2rayNG/releases" target="_blank">v2rayNG</a>.</li>
+                        <li>Нажмите + → Импорт из буфера обмена.</li>
+                        <li>Включайте соединение большой кнопкой.</li>
                     </ol>
                 </div>
 
                 <div class="instructions hidden" id="windows-instructions">
                     <ol>
-                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
-                        <li>Скачайте и установите <a href="https://github.com/qr243vbi/nekobox/releases/download/5.10.25/nekobox-5.10.25-windows64-installer.exe" target="_blank" rel="noopener">NekoBox for Windows</a>.</li>
-                        <li>Откройте программу.</li>
-                        <li>Нажмите <kbd>Ctrl</kbd> + <kbd>V</kbd> — конфигурация добавится автоматически.</li>
-                        <li>Выделите добавленную конфигурацию и нажмите <kbd>Enter</kbd>.</li>
-                        <li>Вверху включите:
-                            <ul>
-                                <li><b>Системный прокси</b> — для работы в браузерах</li>
-                                <li><b>Режим TUN</b> — для всей системы</li>
-                            </ul>
-                        </li>
-                        <li><b>Готово!</b> Вы подключены.</li>
+                        <li>Создайте конфигурацию и скопируйте ссылку.</li>
+                        <li>Установите <a href="https://github.com/qr243vbi/nekobox/releases" target="_blank">NekoBox</a>.</li>
+                        <li>Ctrl + V — конфиг добавится автоматически.</li>
+                        <li>Включите Системный прокси и/или TUN.</li>
                     </ol>
                 </div>
 
                 <div class="instructions hidden" id="ios-instructions">
                     <ol>
-                        <li>Создайте и скопируйте свою конфигурацию в личном кабинете.</li>
-                        <li>Скачайте приложение <a href="https://apps.apple.com/ru/app/v2raytun/id6476628951" target="_blank" rel="noopener">V2RayTun</a> из App Store.</li>
-                        <li>Откройте приложение.</li>
-                        <li>Нажмите <b>+</b> в правом верхнем углу → <b>Импорт из буфера обмена</b>.</li>
-                        <li><b>Готово!</b> Включайте/выключайте соединение центральной кнопкой.</li>
+                        <li>Создайте конфигурацию.</li>
+                        <li>Установите <a href="https://apps.apple.com/ru/app/v2raytun/id6476628951" target="_blank">V2RayTun</a>.</li>
+                        <li>+ → Импорт из буфера обмена.</li>
                     </ol>
                 </div>
             </div>
+
             <h1>Ваши конфигурации</h1>
             <div class="urls-list" id="urlsList"></div>
-            <button class="add-btn" id="addUrlBtn">+ Добавить конфиг</button>
+            <button class="add-btn" id="addConfigBtn">+ Добавить конфигурацию</button>
+
+            <div class="danger-zone">
+                <button id="deleteAccountBtn" class="delete-account-btn">Удалить аккаунт навсегда</button>
+            </div>
         </main>
 
-        <div class="modal" id="loginModal">
+        <!-- Модальное окно ЛОГИНА (показывается при отсутствии токена) -->
+        <div class="modal active" id="loginModal">
             <div class="modal-content">
                 <h2>Вход в аккаунт</h2>
-                <input type="email" id="loginEmail" placeholder="Email" required>
-                <input type="password" id="loginPassword" placeholder="Пароль" required>
+                <input type="email" id="loginEmail" placeholder="Email" autocomplete="email">
+                <input type="password" id="loginPassword" placeholder="Пароль" autocomplete="current-password">
                 <div class="error" id="loginError"></div>
+                
                 <div class="buttons">
                     <button id="loginSubmit">Войти</button>
-                    <button id="closeModal">Отмена</button>
+                </div>
+
+                <p style="text-align: center; margin-top: 20px; color: #888; font-size: 14px;">
+                    Нет аккаунта? 
+                    <a href="register.html" style="color: #00ffff; text-decoration: none;">Зарегистрироваться</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Модальное окно создания конфига -->
+        <div class="modal" id="addModal">
+            <div class="modal-content">
+                <h2>Новая конфигурация</h2>
+                <input type="text" id="configName" placeholder="Название (Телефон, Ноутбук...)" maxlength="64">
+                <div class="error" id="addError"></div>
+                <div class="buttons">
+                    <button id="addSubmit">Создать</button>
+                    <button id="addCancel">Отмена</button>
                 </div>
             </div>
         </div>

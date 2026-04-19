@@ -12,7 +12,7 @@ class Configs:
         self.client_email = client_email
         self.display_name = display_name
 
-    async def legacy_payload(self, data: dict,) -> dict:
+    def legacy_payload(self, data: dict,) -> dict:
         inbounds = data.get("obj")
         inbound = next((i for i in inbounds if i.get("id") == self.inbound_id), None)
         if not inbound:
@@ -44,7 +44,7 @@ class Configs:
             })
         }
 
-    async def legacy_config(self, data: dict) -> str:
+    def legacy_config(self, data: dict) -> str:
         inbounds = data.get("obj")
         inbound = next((i for i in inbounds if i.get("id") == self.inbound_id), None)
         if not inbound:
