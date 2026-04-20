@@ -41,14 +41,12 @@ async function apiRequest(endpoint, options = {}) {
     return res;
 }
 
-// Показать окно логина
 function showLoginModal() {
     document.getElementById("loginModal").classList.add("active");
     document.getElementById("mainContent").classList.add("hidden");
     document.getElementById("userInfo").style.display = "none";
 }
 
-// Скрыть окно логина и показать кабинет
 function hideLoginModal() {
     document.getElementById("loginModal").classList.remove("active");
     document.getElementById("mainContent").classList.remove("hidden");
@@ -73,7 +71,7 @@ async function loadPanel() {
     const data = await res.json();
     
     document.getElementById("userEmail").textContent = data.email || "Аккаунт активен";
-    hideLoginModal();           // ← Важно!
+    hideLoginModal();
     renderConfigs(data.configs || []);
 }
 
@@ -133,7 +131,6 @@ function renderConfigs(configs) {
     });
 }
 
-// ==================== ЛОГИН ====================
 document.getElementById("loginSubmit").addEventListener("click", async () => {
     const email = document.getElementById("loginEmail").value.trim();
     const password = document.getElementById("loginPassword").value;
@@ -160,7 +157,7 @@ document.getElementById("loginSubmit").addEventListener("click", async () => {
             showNotification("Вход выполнен успешно!");
             document.getElementById("loginEmail").value = "";
             document.getElementById("loginPassword").value = "";
-            loadPanel();                    // ← Главное исправление
+            loadPanel();
         } else {
             errorEl.textContent = data.detail || "Неверный email или пароль";
         }
@@ -170,7 +167,6 @@ document.getElementById("loginSubmit").addEventListener("click", async () => {
     }
 });
 
-// ==================== Создание конфига ====================
 document.getElementById("addConfigBtn").addEventListener("click", () => {
     document.getElementById("addModal").classList.add("active");
     document.getElementById("configName").focus();
@@ -206,7 +202,6 @@ document.getElementById("addSubmit").addEventListener("click", async () => {
     }
 });
 
-// ==================== Выход ====================
 document.getElementById("logoutBtn").addEventListener("click", async () => {
     if (!confirm("Выйти из аккаунта?")) return;
 
@@ -223,7 +218,6 @@ document.getElementById("logoutBtn").addEventListener("click", async () => {
     showLoginModal();
 });
 
-// ==================== Удаление аккаунта ====================
 document.getElementById("deleteAccountBtn").addEventListener("click", async () => {
     if (!confirm("Вы уверены? Это действие необратимо!")) return;
 
@@ -238,7 +232,6 @@ document.getElementById("deleteAccountBtn").addEventListener("click", async () =
     }
 });
 
-// Табы "Как подключиться"
 document.querySelectorAll(".tab-btn").forEach(btn => {
     btn.addEventListener("click", () => {
         document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -249,7 +242,6 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
     });
 });
 
-// Закрытие модалки создания конфига кликом вне
 document.getElementById("addModal").addEventListener("click", (e) => {
     if (e.target === document.getElementById("addModal")) {
         document.getElementById("addModal").classList.remove("active");
