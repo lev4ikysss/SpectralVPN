@@ -61,7 +61,12 @@ async def login(body: UserLogin, db: AsyncSession = Depends(get_db)):
         select(User).where(User.email == body.email)
     )
     user = result.scalar_one_or_none()
-    if (not user or user.deleted_at is not None) or (not verify_password(body.password, user.pass_hash)):
+    if not user or user.deleted_at is not None:
+        raise HTTPException(
+            status_code=401,
+            detail="Incorrect email or password"
+        )
+    if not await verify_password(body.password, user.pass_hash, user.id, db):
         raise HTTPException(
             status_code=401,
             detail="Incorrect email or password"

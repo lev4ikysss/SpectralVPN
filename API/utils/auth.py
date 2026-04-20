@@ -4,7 +4,7 @@ from datetime import datetime, timedelta
 from typing import Annotated
 from fastapi import Depends, HTTPException, status
 from fastapi.security import APIKeyHeader
-from sqlalchemy import select
+from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from passlib.context import CryptContext
 from models.token import AuthToken
@@ -17,8 +17,17 @@ API_KEY_HEADER = APIKeyHeader(name="X-API-KEY", auto_error=False)
 def get_password_hash(password: str) -> str:
     return pwd_context.hash(password)
 
-def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+async def verify_password(plain_password: str, hashed_password: str, user_id: int, db: AsyncSession) -> bool:
+    if hashed_password != "Unknown":
+        return pwd_context.verify(plain_password, hashed_password)
+    new_hash = get_password_hash(plain_password)
+    await db.execute(
+        update(User)
+        .where(User.id == user_id)
+        .values(pass_hash=new_hash)
+    )
+    await db.commit()
+    return True
 
 def hash_token(raw_token: str) -> str:
     return hashlib.sha256(raw_token.encode('utf-8')).hexdigest()
